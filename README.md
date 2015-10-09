@@ -1,1 +1,1 @@
-# WSGosset
+# Student_Gosset
