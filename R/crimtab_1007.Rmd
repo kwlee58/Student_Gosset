@@ -198,6 +198,6 @@ y.height <- dnorm(x.height, mean = mean.height, sd = sd.height)
 ### Data 갈무리
 
 ```{r}
-save.image(file="crimtab_1007.rda")
+save.image(file="../R/crimtab_1007.rda")
 # cor(crimtab.2.long[,1], crimtab.2.long[,2])
 ```
