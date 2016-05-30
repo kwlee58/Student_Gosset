@@ -14,7 +14,7 @@ load("./crimtab.rda")
 산점도를  여러 유형으로 표현하기 위하여 필요한 패키지 설치
 
 ```{r, hexbin}
-# install.packages("hexbin")
+# install.packages("hexbin", repos = "http://cran.rstudio.com")
 library(hexbin)
 ```
 
