@@ -1,0 +1,63 @@
+---
+title: "Student 3000 Criminal Data : Test"
+author: "coop711"
+date: "2015년 3월 19일"
+output: html_document
+---
+
+```{r setup, include = FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages("pander", repos = "https://cran.rstudio.com")
+# install.packages("xlsx", repos = "https://cran.rstudio.com")
+# library(xlsx)
+library(pander)
+library(knitr)
+panderOptions('table.split.table', Inf)
+panderOptions('table.alignment.rownames', 'left')
+panderOptions('table.alignment.default', 'right')
+options(width = 180)
+```
+
+### Data Loading
+
+```{r, data}
+load("./crimtab.rda")
+# str(crimtab.long.df)
+```
+
+Quetelet의 가슴둘레 자료에서 살핀 바와 같이 이 자료를 그대로 ad.test 등에 적용하면 매우 작은 p-value 가 예상됨.
+
+```{r, Anderson-Darling test}
+library(nortest)
+# ad.test(crimtab.long.df[, 1])
+# ad.test(crimtab.long.df[, 2])
+pander(sapply(crimtab.long.df, ad.test))
+```
+
+`height`의 경우 인치 단위로 측정한 자료를 센티 단위로 변환한 것임. 이 점에 유의하여 원 자료의 모습에 가깝게 noise 를 넣기 위하여 생성
+
+```{r, histogram of noise}
+r.noise <- runif(3000) - 0.5
+hist(r.noise, prob = TRUE, xlim = c(-0.5, 0.5), ylim = c(0, 1.5))
+```
+
+noise를 넣어 test 수행
+
+```{r, tests with noise}
+crimtab.long.df.noise <- crimtab.long.df
+crimtab.long.df.noise[, 1] <- crimtab.long.df[, 1] + r.noise/10
+crimtab.long.df.noise[, 2] <- crimtab.long.df[, 2] + r.noise * 2.54
+pander(sapply(crimtab.long.df.noise, ad.test))
+pander(sapply(crimtab.long.df.noise, cvm.test))
+pander(sapply(crimtab.long.df.noise, lillie.test))
+# ad.test(crimtab.long.df[, 2] + r.noise * 2.54)
+# cvm.test(crimtab.long.df[, 2] + r.noise * 2.54)
+# lillie.test(crimtab.long[,2]+r.noise*2.54)
+# ad.test(crimtab.long[, 1] + r.noise/10)
+# cvm.test(crimtab.long[, 1] + r.noise/10)
+# lillie.test(crimtab.long[, 1] + r.noise/10)
+```
+
+```{r, save}
+save.image("./crimtab_test.rda")
+```
