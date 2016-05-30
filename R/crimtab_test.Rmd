@@ -28,6 +28,7 @@ load("./crimtab.rda")
 Quetelet의 가슴둘레 자료에서 살핀 바와 같이 이 자료를 그대로 ad.test 등에 적용하면 매우 작은 p-value 가 예상됨.
 
 ```{r, Anderson-Darling test}
+# install.packages("nortest", repos = "http://cran.rstudio.com")
 library(nortest)
 # ad.test(crimtab.long.df[, 1])
 # ad.test(crimtab.long.df[, 2])

@@ -1,5 +1,5 @@
 ---
-title: "Student 3000 Criminal Data"
+title: "Student 3000 Criminal Data : ggplot"
 author: "coop711"
 date: "2015년 10월 7일"
 output: html_document
