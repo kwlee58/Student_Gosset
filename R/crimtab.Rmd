@@ -66,4 +66,6 @@ cvm.test(crimtab.long[,1]+r.noise/10)
 lillie.test(crimtab.long[,1]+r.noise/10)
 ```
 
-
+```{r, save}
+save.image("./crimtab_0319.rda")
+```

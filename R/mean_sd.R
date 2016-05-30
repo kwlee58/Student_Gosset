@@ -1,4 +1,4 @@
-mean.sd <-
+mean_sd <-
 function(x) {
   mean <- mean(x, na.rm = TRUE)
   sd <- sd(x)

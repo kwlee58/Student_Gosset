@@ -10,7 +10,9 @@ Data Manipulation
 
 - Data Frame으로 정리하고, 다시 long format 으로 변환. height를 인치로 변환하면 어떻게 될까?
 
-```{r}
+```{r, data loading}
+# load("./crimtab.rda")
+crimtab.2 <- crimtab
 dimnames(crimtab.2)[[2]]<-as.numeric(dimnames(crimtab.2)[[2]])/2.54
 crimtab.2
 crimtab.3<-crimtab.2

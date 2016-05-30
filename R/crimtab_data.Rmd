@@ -1,0 +1,85 @@
+---
+title: "Student 3000 Criminal Data"
+author: "coop711"
+date: "2015년 3월 19일"
+output: html_document
+---
+
+### Structure of Data
+
+W. S. Gosset 이 t-분포를 유도하느라고 모의실험에 활용한 자료는 다음과 같음.
+
+```{r, crimtab}
+crimtab
+str(crimtab)
+```
+
+자료구조에서 살필 수 있다시피 손가락 길이와 키를 계급으로 나누고 손가락 길이와 키의 조합을 이름으로 갖는 `table`임. 각 cell의 값은 길이와 키의 조합이 나타나는 빈도임. 여기서 키를 인치 단위로 환원하면 어떤 모양이 드러나는지 살펴보자. 이러한 table 구조의 행과 열에 이름을 붙이려면, `list`를 사용함.
+    + cm 단위로 되어 있는 키의 계급을 인치 단위로 변환하면 숨어있던 자료구가 드러남. `dimnames`설정 과정에서 `list(finger = ..., height = ...)` 같은 방법으로 이름을 부여할 경우와 그렇지 않을 때 차이가 무엇인지 익혀 두자.
+
+```{r, viewing the real data structure}
+crimtab.2 <- crimtab
+colnames(crimtab.2) <- as.numeric(colnames(crimtab.2))/2.54
+dimnames(crimtab.2) <- list(finger = rownames(crimtab.2), height = colnames(crimtab.2))
+crimtab.2
+str(crimtab.2)
+```
+
+### Data Frame 변환
+
+글자 속성을 갖는 손가락 길이와 키의 조합에 따른 빈도를 또 다른 변수로 갖는 data frame으로 변환하고 이를 다시 long format 으로 전환하는 과정은 다음과 같음.
+    + 1차적으로 각 손가락 길이와 키의 조합을 갖는 인원수로 구성된 data frame으로 변환하고, case 단위의 long format data frame으로 2단계 변환 
+    + `as.data.frame()` 에서 `stringsAsFactors = FALSE`가 매우 중요한 역할을 하는 것임. 이 옵션을 설정하지 않을 경우 `Factor`로 잡히면 `numeric`으로 전환할 수 없게 됨. `Factor`는 본질적으로 음이 아닌 정수로 취급됨.
+    + 보통 이 설정은 `stringsAsFactors = default.stringsAsFactors()`가 default 설정으로 되어 있고, 따라서 `default.stringsAsFactors() = ` `r default.stringsAsFactors()` 에 따라 설정을 바꿔주면 되어야 하나 써 있는 대로 되지 않는 경우가 있어서 가능한 설정해주는 것이 안전함.
+    + 단순히 `data.frame()`으로 변환할 경우 `Factor`로 설정되어`numeric`으로 변환하더라도 의미없는 숫자를 얻게 됨. 
+    + `as.data.frame()`의 결과물로 두 개의 character vector 와 counts를 나타내는 새로운 변수 `Freq`가 나오게 됨. 손가락 길이와 키를 나타내는 character를 numeric으로 전환하고 다음 작업 진행.
+
+`Factor`는 본질적으로 음이 아닌 정수이기 때문임.
+
+`sapply`를 이용하여 두 변수의 속성을 한번에 글자(character)에서 숫자(numeric)으로 변환함.
+
+```{r, data frame}
+crimtab.df <- as.data.frame(crimtab.2, stringsAsFactors = FALSE)
+str(crimtab.df)
+crimtab.df[1:2] <- sapply(crimtab.df[1:2], as.numeric)
+str(crimtab.df)
+```
+
+손가락 길이와 키의 조합이 나타나는 빈도만큼 그 조합을 반복하는 long format으로 변환하기 위하여 `mapply` 활용. `apply`를 사용하는 방법도 주석처리하여 보여 줌.
+
+```{r, long format}
+# crimtab.long <- apply(crimtab.df[ , 2:3], 2, function(x) rep(x, crimtab.df[ , 1]))
+# crimtab.long <- apply(crimtab.df[, c("finger", "height")], 2, function(x) rep(x, crimtab.df[ , "Freq"]))
+# crimtab.long <- apply(crimtab.df[c("finger", "height")], 2, function(x) rep(x, crimtab.df[ , "Freq"]))
+crimtab.long <- mapply(function(x) rep(x, crimtab.df$Freq), crimtab.df[c("finger", "height")])
+str(crimtab.long)
+```
+
+long format 으로 변환하는 다른 방법 1
+
+```{r, alternative implementation 1}
+# finger.long <- rep(crimtab.df$finger, crimtab.df$Freq)
+# height.long <- rep(crimtab.df$height, crimtab.df$Freq)
+# crimtab.long.df <- data.frame(finger = finger.long, height = height.long)
+# str(crimtab.long.df)
+```
+long format 으로 변환하는 다른 방법 2
+
+```{r, alternative implementation 2}
+# index.crimtab<-rep(1:nrow(crimtab.df), crimtab.df[, "Freq"])
+# index.crimtab[1:10]
+# crimtab.df.long <- crimtab.df[index.crimtab, 1:2]
+# str(crimtab.df.long)
+```
+matrix 를 data frame으로 변환
+
+```{r, matrix to dataframe}
+crimtab.long.df <- data.frame(crimtab.long)
+str(crimtab.long.df)
+```
+
+### Save for future works
+
+```{r, save}
+save.image("./crimtab.rda")
+```
