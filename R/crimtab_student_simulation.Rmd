@@ -16,6 +16,7 @@ load("./crimtab.rda")
 3,000장의 카드를 잘 섞는 것은 `sample()` 이용.
  
 ```{r, suffling}
+# set.seed(113)
 crimtab.shuffle <- crimtab.long.df[sample(1:3000), ]
 ```
 
@@ -60,9 +61,10 @@ t-통계량들의 히스토그램을 그리고, 자유도 3인 t의 밀도함수
 
 ```{r, comparison}
 hist(sample.t, prob = TRUE, nclass = 20, xlim = c(-6, 6), ylim = c(0, 0.5), main = "Histogram of Sample t-statistics", xlab = "Sampled t-values")
-lines(seq(-6, 6, by = 0.01), dt(seq(-6, 6, by = 0.01), df = 3))
+# hist(sample.t, prob = TRUE, nclass = 50, xlim = c(-6, 6), ylim = c(0, 0.5), main = "Histogram of Sample t-statistics", xlab = "Sampled t-values")
+lines(seq(-6, 6, by = 0.01), dt(seq(-6, 6, by = 0.01), df = 3), col = "blue")
 lines(seq(-6, 6, by = 0.01), dnorm(seq(-6, 6, by = 0.01)), col = "red")
-legend("topright", inset = 0.05, lty = 1, col = c("black", "red"), legend = c("t with df=3", "standard normal"))
+legend("topright", inset = 0.05, lty = 1, col = c("blue", "red"), legend = c("t with df=3", "standard normal"))
 ```
 
 `qqnorm()` 을 그려보면 정규분포와 꼬리에서 큰 차이가 난다는 것을 알 수 있음.
