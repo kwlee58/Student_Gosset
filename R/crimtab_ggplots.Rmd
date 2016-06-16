@@ -5,13 +5,16 @@ date: "2015년 10월 7일"
 output: html_document
 ---
 
-### Working Data Loading
+## Working Data Loading
 
-```{r, data loading}
-# options(width=132)
+```{r, data loading, echo = TRUE}
 load("./crimtab.rda")
-# str(crimtab.long.df)
+ls()
+ls.str()
+head(crimtab.long.df)
 ```
+
+<P style = "page-break-before: always">
 
 ## Graphic Representation
 
@@ -98,28 +101,95 @@ crimtab.stat.df$finger[[1]]
 str(crimtab.stat.df$finger[[1]])
 ```
 
+<P style = "page-break-before: always">
+
 ### ggplot
 
 * 키와 손가락 길이의 산점도  
 
-```{r, scatter of finger and height, fig.width = 6, fig.height = 6}
+```{r, scatter of finger and height, fig.width = 7, fig.height = 7}
 library(ggplot2)
 g1 <- ggplot(crimtab.long.df, aes(x = height, y = finger)) 
 g1 + geom_point()
+```
+
+<P style = "page-break-before: always">
+
+* 투명도 변경 : `alpha = 0.9`
+  
+```{r, alpha variation 0.9, fig.width = 7, fig.height = 7}
 g1 + geom_point(alpha = 0.9)
+```
+
+<P style = "page-break-before: always">
+
+* 투명도 변경 : `alpha = 0.5`
+  
+```{r, alpha variation 0.5, fig.width = 7, fig.height = 7}
 g1 + geom_point(alpha = 0.5)
+```
+
+<P style = "page-break-before: always">
+
+* 투명도 변경 : `alpha = 0.1`
+  
+```{r, alpha variation 0.1, fig.width = 7, fig.height = 7}
 g1 + geom_point(alpha = 0.1)
+```
+
+<P style = "page-break-before: always">
+
+* 중복점 흐트러놓기 : `position = jitter`
+  
+```{r, position jitter, fig.width = 7, fig.height = 7}
 g1 + geom_point(position = "jitter")
+```
+
+<P style = "page-break-before: always">
+
+* 점의 크기를 줄이고 중복점 흐트러놓기 : `position = jitter, size = 0.7`
+  
+```{r, position jitter size, fig.width = 7, fig.height = 7}
 g1 + geom_point(position = "jitter", size = 0.7)
+```
+
+<P style = "page-break-before: always">
+
+* 동일한 효과 : `position = position_jitter(), size = 0.7`
+  
+```{r, position jitter size alt, fig.width = 7, fig.height = 7}
 g1 + geom_point(position = position_jitter(), size = 0.7)
+```
+
+<P style = "page-break-before: always">
+
+* 흐트러놓는 폭 조절 : `width = 1, height = 0, size = 0.7`
+  
+```{r, position jitter size width, fig.width = 7, fig.height = 7}
 g1 + geom_point(position = position_jitter(width = 1, height = 0), size = 0.7)
+```
+
+<P style = "page-break-before: always">
+
+* 흐트러놓는 폭과 높이 조절 : `width = 1, height = 0.1, size = 0.7`
+  
+```{r, position jitter size width height, fig.width = 7, fig.height = 7}
 g1 + geom_point(position = position_jitter(width = 1, height = 0.1), size = 0.7)
+```
+
+<P style = "page-break-before: always">
+
+* 흑백 테마 : `theme_bw()`
+  
+```{r, position jitter size bw, fig.width = 7, fig.height = 7}
 g1 + geom_point(position = position_jitter(width = 1, height = 0.1), size = 0.7) + theme_bw()
 ```
 
-* 변수 각각의 히스토그램
+<P style = "page-break-before: always">
 
-```{r, histograms of each, fig.width = 8, fig.height=4}
+### 히스토그램
+
+```{r, histograms of each, fig.width = 8, fig.height = 4}
 h1 <- ggplot(crimtab.long.df, aes(x = height)) 
 h1 + geom_histogram(alpha = 0.5)
 f1 <- ggplot(crimtab.long.df, aes(x = finger))

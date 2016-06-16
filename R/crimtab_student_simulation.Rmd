@@ -49,20 +49,22 @@ sample.t[t.inf]
 sample.t[t.inf] <- 6*sign(sample.t[t.inf])
 ```
 
-문제되는 값이 없는 것을 확인하고, 평균과 표준편차 계산. 자유도 $n$인 t-분포의 평균과 표준편차는 각각 0과 $\sqrt{\frac{n}{n-2}}$임을 상기할 것.
+문제되는 값이 없는 것을 확인하고, 평균과 표준편차 계산. 자유도 $n$인 t-분포의 평균과 표준편차는 각각 0과 $\sqrt{\frac{n}{n-2}}$임을 상기할 것. -6이나 +6보다 큰 값이 상당히 자주 나온다는 점에 유의.
 
-```{r, mean and sd}
+```{r, summary}
 mean(sample.t)
 sd(sample.t)
+summary(sample.t)
 ```
 
 t-통계량들의 히스토그램을 그리고, 자유도 3인 t의 밀도함수, 표준정규분포 밀도함수와 비교.
 
-```{r, comparison}
-hist(sample.t, prob = TRUE, nclass = 20, xlim = c(-6, 6), ylim = c(0, 0.5), main = "Histogram of Sample t-statistics", xlab = "Sampled t-values")
-lines(seq(-6, 6, by = 0.01), dt(seq(-6, 6, by = 0.01), df = 3))
+```{r, comparison, fig.width = 10, fig.height = 6}
+# hist(sample.t, prob = TRUE, ylim = c(0, 0.5))
+hist(sample.t, prob = TRUE, breaks = seq(-20, 20, by = 0.5), xlim = c(-6, 6), ylim = c(0, 0.5), main = "Histogram of Sample t-statistics", xlab = "Sampled t-values")
+lines(seq(-6, 6, by = 0.01), dt(seq(-6, 6, by = 0.01), df = 3), col = "blue")
 lines(seq(-6, 6, by = 0.01), dnorm(seq(-6, 6, by = 0.01)), col = "red")
-legend("topright", inset = 0.05, lty = 1, col = c("black", "red"), legend = c("t with df=3", "standard normal"))
+legend("topright", inset = 0.05, lty = 1, col = c("blue", "red"), legend = c("t with df = 3", "standard normal"))
 ```
 
 `qqnorm()` 을 그려보면 정규분포와 꼬리에서 큰 차이가 난다는 것을 알 수 있음.
