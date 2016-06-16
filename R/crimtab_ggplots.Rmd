@@ -27,6 +27,8 @@ head(crimtab.long.df)
 plot(crimtab.long.df)
 ```
 
+<P style = "page-break-before: always">
+
 * 변수 각각의 히스토그램은?
 
 ```{r, histograms for each, fig.width = 12, fig.height = 4}
@@ -189,22 +191,46 @@ g1 + geom_point(position = position_jitter(width = 1, height = 0.1), size = 0.7)
 
 ### 히스토그램
 
+* Counts 
+
 ```{r, histograms of each, fig.width = 8, fig.height = 4}
 h1 <- ggplot(crimtab.long.df, aes(x = height)) 
 h1 + geom_histogram(alpha = 0.5)
 f1 <- ggplot(crimtab.long.df, aes(x = finger))
 f1 + geom_histogram(alpha = 0.5)
+```
+
+<P style = "page-break-before: always">
+
+* Probability Histogram : Height
+
+```{r, probability histogram height, fig.width = 8, fig.height = 4}
 h1 + geom_histogram(aes(y = ..density..), binwidth = 1, alpha = 0.5)
+```
+
+* Probability Histogram : Finger
+
+```{r, probability histogram finger, fig.width = 8, fig.height = 4}
+
 f1 + geom_histogram(aes(y = ..density..), binwidth = 0.1, alpha = 0.5)
+```
+
+<P style = "page-break-before: always">
+
+* Probability with `fill = 'white'`, `colour = 'black'`
+
+```{r, histograms of each probability fill colour, fig.width = 8, fig.height = 4}
 (g.h.1 <- h1 + geom_histogram(aes(y = ..density..), binwidth = 1, fill = "white", colour = "black"))
 (g.f.1 <- f1 + geom_histogram(aes(y = ..density..), binwidth = 0.2, fill = "white", colour = "black"))
 ```
+
+<P style = "page-break-before: always">
 
 * `breaks` 설정의 필요성
     + default 로 그린 히스토그램에 평균과 표준편차를 위치시켜보면, Quetelet의 가슴둘레 자료를 히스토그램으로 표현할 때와 같이 0.5만큼 치우친 것을 알 수 있음.
     + 따라서 `geom_histogram`의 원형인 `stat_bin`에 `breaks=`를 재설정할 필요.
     
-```{r, breaks, fig.width = 8, fig.height = 4}
+```{r basic stats}
 library(grid)
 (mean.finger <- crimtab.stat[, 1][[1]])
 (sd.finger <- crimtab.stat[, 1][[2]])
@@ -214,20 +240,99 @@ x.finger <- seq(9.5, 13.5, length.out = 3000)
 y.finger <- dnorm(x.finger, mean = mean.finger, sd = sd.finger)
 x.height <- seq(56, 77, length.out = 3000)
 y.height <- dnorm(x.height, mean = mean.height, sd = sd.height)
+```
+
+<P style = "page-break-before: always">
+
+```{r, breaks, fig.width = 8, fig.height = 4}
 (g.h.2 <- g.h.1 + annotate("segment", x = mean.height, xend = mean.height, y= -0.02, yend = 0, arrow = arrow(length = unit(0.3, "cm"))))
+```
+
+* `theme_bw()`
+
+```{r, breaks theme_bw, fig.width = 8, fig.height = 4}
 (g.h.3 <- g.h.2 + theme_bw())
+```
+
+<P style = "page-break-before: always">
+
+* `geom_line())`
+
+```{r, geom_line(), fig.width = 8, fig.height = 4}
 (g.h.4 <- g.h.3 + geom_line(aes(x = x.height, y = y.height)))
+```
+
+* `breaks = 55.5:77.5`
+
+```{r, breaks fill colour, fig.width = 8, fig.height = 4}
 (g.h.5 <- ggplot(crimtab.long.df, aes(x = height)) + stat_bin(aes(y = ..density..), binwidth = 1, breaks = 55.5:77.5, fill = "white", colour="black"))
+```
+
+<P style = "page-break-before: always">
+
+* `annotate("segment", ...)`, `theme_bw()`
+
+```{r, segment, fig.width = 8, fig.height = 4}
 (g.h.6 <- g.h.5 + annotate("segment", x = mean.height, xend = mean.height, y= -0.02, yend = 0, arrow = arrow(length = unit(0.3, "cm"))))
 (g.h.7 <- g.h.6 + theme_bw())
+```
+
+<P style = "page-break-before: always">
+
+* Add `geom_line()`
+
+```{r, add geom_line(), fig.width = 8, fig.height = 4}
 (g.h.8 <- g.h.7 + geom_line(aes(x = x.height, y = y.height)))
+```
+
+<P style = "page-break-before: always">
+
+* For finger data
+
+```{r, geom_histogram, fig.width = 8, fig.height = 4}
 (g.f.1 <- ggplot(crimtab.long.df, aes(x = finger)) + geom_histogram(aes(y = ..density..), binwidth = 0.2, fill = "white", colour = "black"))
 (g.f.2 <- g.f.1 + annotate("segment", x = mean.finger, xend = mean.finger, y= -0.1, yend = 0, arrow = arrow(length = unit(0.3, "cm"))))
+```
+
+<P style = "page-break-before: always">
+
+* `theme_bw()`
+
+```{r, bw, fig.width = 8, fig.height = 4}
 (g.f.3 <- g.f.2 + theme_bw())
+```
+
+* `geom_line()`
+
+```{r, geom_line, fig.width = 8, fig.height = 4}
 (g.f.4 <- g.f.3 + geom_line(aes(x = x.finger, y = y.finger)))
+```
+
+<P style = "page-break-before: always">
+
+* `..density..`
+
+```{r, density, fig.width = 8, fig.height = 4}
 (g.f.5 <- ggplot(crimtab.long.df, aes(x = finger)) + stat_bin(aes(y = ..density..), breaks = seq(9.45, 13.55, by = 0.2), fill = "white", colour = "black"))
+```
+
+* `segment`
+
+```{r, segment2, fig.width = 8, fig.height = 4}
 (g.f.6 <- g.f.5 + annotate("segment", x = mean.finger, xend = mean.finger, y = -0.1, yend = 0, arrow = arrow(length = unit(0.3, "cm"))))
+```
+
+<P style = "page-break-before: always">
+
+* `theme_bw()` 
+
+```{r, bw2, fig.width = 8, fig.height = 4}
 (g.f.7 <- g.f.6 + theme_bw())
+```
+
+* `geom_line()` 
+
+```{r, geom_line2, fig.width = 8, fig.height = 4}
 (g.f.8 <- g.f.7 + geom_line(aes(x = x.finger, y = y.finger)))
 ```
 
@@ -235,5 +340,4 @@ y.height <- dnorm(x.height, mean = mean.height, sd = sd.height)
 
 ```{r, save}
 save.image(file="./crimtab_ggplot.rda")
-# cor(crimtab.2.long[,1], crimtab.2.long[,2])
 ```
