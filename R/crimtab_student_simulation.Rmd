@@ -8,7 +8,7 @@ output: html_document
 ### Data Loading
 
 ```{r, data loading}
-load("./crimtab.rda")
+load("./crimtab.RData")
 ls()
 ls.str()
 head(crimtab.long.df, n = 10)
