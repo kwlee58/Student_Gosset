@@ -11,7 +11,7 @@
 
 <meta name="author" content="coop711" />
 
-<meta name="date" content="2017-03-19" />
+<meta name="date" content="2017-03-23" />
 
 <title>Student 3000 Criminal Data</title>
 
@@ -119,7 +119,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Student 3000 Criminal Data</h1>
 <h4 class="author"><em>coop711</em></h4>
-<h4 class="date"><em>2017-03-19</em></h4>
+<h4 class="date"><em>2017-03-23</em></h4>
 
 </div>
 
@@ -265,7 +265,12 @@ $(document).ready(function () {
 <p>자료구조에서 살필 수 있다시피 손가락 길이와 키를 계급으로 나누고 손가락 길이와 키의 조합을 이름으로 갖는 <code>table</code>임. 각 cell의 값은 길이와 키의 조합이 나타나는 빈도임. 여기서 키를 인치 단위로 환원하면 어떤 모양이 드러나는지 살펴보자. cm 단위로 되어 있는 키의 계급을 인치 단위로 변환하면 숨어있던 자료구조가 드러난다.</p>
 <p>이러한 table 구조의 행과 열에 이름을 붙이려면, <code>list</code>를 사용함.<code>dimnames</code>설정 과정에서 <code>list(finger = ..., height = ...)</code> 같은 방법으로 이름을 부여할 경우와 그렇지 않을 때 차이가 무엇인지 익혀 두자.</p>
 <pre class="r"><code>crimtab.2 &lt;- crimtab
-colnames(crimtab.2) &lt;- as.numeric(colnames(crimtab.2))/2.54
+colnames(crimtab.2)</code></pre>
+<pre><code>##  [1] &quot;142.24&quot; &quot;144.78&quot; &quot;147.32&quot; &quot;149.86&quot; &quot;152.4&quot;  &quot;154.94&quot; &quot;157.48&quot;
+##  [8] &quot;160.02&quot; &quot;162.56&quot; &quot;165.1&quot;  &quot;167.64&quot; &quot;170.18&quot; &quot;172.72&quot; &quot;175.26&quot;
+## [15] &quot;177.8&quot;  &quot;180.34&quot; &quot;182.88&quot; &quot;185.42&quot; &quot;187.96&quot; &quot;190.5&quot;  &quot;193.04&quot;
+## [22] &quot;195.58&quot;</code></pre>
+<pre class="r"><code>colnames(crimtab.2) &lt;- as.numeric(colnames(crimtab.2))/2.54
 dimnames(crimtab.2) &lt;- list(finger = rownames(crimtab.2), height = colnames(crimtab.2))
 crimtab.2</code></pre>
 <pre><code>##       height
@@ -337,14 +342,25 @@ str(crimtab.df)</code></pre>
 ##  $ finger: chr  &quot;9.4&quot; &quot;9.5&quot; &quot;9.6&quot; &quot;9.7&quot; ...
 ##  $ height: chr  &quot;56&quot; &quot;56&quot; &quot;56&quot; &quot;56&quot; ...
 ##  $ Freq  : int  0 0 0 0 0 0 1 0 0 0 ...</code></pre>
-<pre class="r"><code>crimtab.df[1:2] &lt;- sapply(crimtab.df[1:2], as.numeric)
+<pre class="r"><code># head(crimtab.df, n = 10)
+# as.numeric(crimtab.df$finger)
+# as.numeric(crimtab.df[, &quot;finger&quot;])
+# sapply(crimtab.df[, 1:2], as.numeric)
+# sapply(crimtab.df[, c(&quot;finger&quot;, &quot;height&quot;)], as.numeric)
+# str(crimtab.df[1:2])
+# str(crimtab.df[c(&quot;finger&quot;, &quot;height&quot;)])
+# sapply(crimtab.df[1:2], as.numeric)
+# sapply(crimtab.df[c(&quot;finger&quot;, &quot;height&quot;)], as.numeric)
+crimtab.df[1:2] &lt;- sapply(crimtab.df[1:2], as.numeric)
 str(crimtab.df)</code></pre>
 <pre><code>## 'data.frame':    924 obs. of  3 variables:
 ##  $ finger: num  9.4 9.5 9.6 9.7 9.8 9.9 10 10.1 10.2 10.3 ...
 ##  $ height: num  56 56 56 56 56 56 56 56 56 56 ...
 ##  $ Freq  : int  0 0 0 0 0 0 1 0 0 0 ...</code></pre>
 <p>손가락 길이와 키의 조합이 나타나는 빈도만큼 그 조합을 반복하는 long format으로 변환하기 위하여 <code>mapply</code> 활용. <code>apply</code>를 사용하는 방법도 주석처리하여 보여 줌.</p>
-<pre class="r"><code># crimtab.long &lt;- apply(crimtab.df[ , 2:3], 2, function(x) rep(x, crimtab.df[ , 1]))
+<pre class="r"><code># crimtab.long &lt;- apply(crimtab.df[ , 1:2], 2, function(x) rep(x, crimtab.df[ , 3]))
+# str(crimtab.long)
+# head(crimtab.long)
 # crimtab.long &lt;- apply(crimtab.df[, c(&quot;finger&quot;, &quot;height&quot;)], 2, function(x) rep(x, crimtab.df[ , &quot;Freq&quot;]))
 # crimtab.long &lt;- apply(crimtab.df[c(&quot;finger&quot;, &quot;height&quot;)], 2, function(x) rep(x, crimtab.df[ , &quot;Freq&quot;]))
 crimtab.long &lt;- mapply(function(x) rep(x, crimtab.df$Freq), crimtab.df[c(&quot;finger&quot;, &quot;height&quot;)])

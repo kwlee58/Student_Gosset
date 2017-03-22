@@ -21,6 +21,7 @@ cm 단위로 되어 있는 키의 계급을 인치 단위로 변환하면 숨어
 
 ```{r, viewing the real data structure}
 crimtab.2 <- crimtab
+colnames(crimtab.2)
 colnames(crimtab.2) <- as.numeric(colnames(crimtab.2))/2.54
 dimnames(crimtab.2) <- list(finger = rownames(crimtab.2), height = colnames(crimtab.2))
 crimtab.2
@@ -42,6 +43,15 @@ str(crimtab.2)
 ```{r, data frame}
 crimtab.df <- as.data.frame(crimtab.2, stringsAsFactors = FALSE)
 str(crimtab.df)
+# head(crimtab.df, n = 10)
+# as.numeric(crimtab.df$finger)
+# as.numeric(crimtab.df[, "finger"])
+# sapply(crimtab.df[, 1:2], as.numeric)
+# sapply(crimtab.df[, c("finger", "height")], as.numeric)
+# str(crimtab.df[1:2])
+# str(crimtab.df[c("finger", "height")])
+# sapply(crimtab.df[1:2], as.numeric)
+# sapply(crimtab.df[c("finger", "height")], as.numeric)
 crimtab.df[1:2] <- sapply(crimtab.df[1:2], as.numeric)
 str(crimtab.df)
 ```
@@ -49,7 +59,9 @@ str(crimtab.df)
 손가락 길이와 키의 조합이 나타나는 빈도만큼 그 조합을 반복하는 long format으로 변환하기 위하여 `mapply` 활용. `apply`를 사용하는 방법도 주석처리하여 보여 줌.
 
 ```{r, long format}
-# crimtab.long <- apply(crimtab.df[ , 2:3], 2, function(x) rep(x, crimtab.df[ , 1]))
+# crimtab.long <- apply(crimtab.df[ , 1:2], 2, function(x) rep(x, crimtab.df[ , 3]))
+# str(crimtab.long)
+# head(crimtab.long)
 # crimtab.long <- apply(crimtab.df[, c("finger", "height")], 2, function(x) rep(x, crimtab.df[ , "Freq"]))
 # crimtab.long <- apply(crimtab.df[c("finger", "height")], 2, function(x) rep(x, crimtab.df[ , "Freq"]))
 crimtab.long <- mapply(function(x) rep(x, crimtab.df$Freq), crimtab.df[c("finger", "height")])
