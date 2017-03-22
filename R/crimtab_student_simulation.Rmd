@@ -1,7 +1,7 @@
 ---
 title: "Crimtab Data for Simulation of T-Distribution"
 author: "coop711"
-date: "2015년 3월 25일"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
