@@ -1,14 +1,14 @@
 ---
 title: "Student 3000 Criminal Data : ggplot"
 author: "coop711"
-date: "2015년 10월 7일"
+date: "`Sys.Date()`"
 output: html_document
 ---
 
 ## Working Data Loading
 
 ```{r, data loading, echo = TRUE}
-load("./crimtab.rda")
+load("./crimtab.RData")
 ls()
 ls.str()
 head(crimtab.long.df)
@@ -109,7 +109,7 @@ str(crimtab.stat.df$finger[[1]])
 
 ```{r, scatter of finger and height, fig.width = 7, fig.height = 7}
 library(ggplot2)
-g1 <- ggplot(crimtab.long.df, aes(x = height, y = finger)) 
+g1 <- ggplot(data = crimtab.long.df, aes(x = height, y = finger)) 
 g1 + geom_point()
 ```
 
@@ -234,6 +234,6 @@ y.height <- dnorm(x.height, mean = mean.height, sd = sd.height)
 ### Data 갈무리
 
 ```{r, save}
-save.image(file="./crimtab_ggplot.rda")
+save.image(file="./crimtab_ggplot.RData")
 # cor(crimtab.2.long[,1], crimtab.2.long[,2])
 ```
