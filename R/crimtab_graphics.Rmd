@@ -14,7 +14,7 @@ load("./crimtab.RData")
 산점도를  여러 유형으로 표현하기 위하여 필요한 패키지 설치
 
 ```{r, hexbin}
-# install.packages("hexbin", repos = "http://cran.rstudio.com")
+# install.packages("hexbin", repos = "https://cran.rstudio.com")
 library(hexbin)
 ```
 
@@ -28,8 +28,9 @@ Plots
 
 ```{r, plots, fig.width = 8, fig.height = 8}
 par(mfrow = c(2, 2))
-plot(crimtab.long.df)
-plot(crimtab.long.df, pch = 20)
+# plot(x = crimtab.long.df[, 2], y = crimtab.long.df[, "finger"])
+plot(crimtab.long.df[, 2:1])
+plot(crimtab.long.df[, 2:1], pch = 20)
 # smoothScatter(crimtab.long.df[,"height"], crimtab.long.df[,"finger"], xlab = "height", ylab = "finger")
 # smoothScatter(crimtab.long.df[,"height"], crimtab.long.df[,"finger"], nbin = 32, xlab = "height", ylab = "finger")
 smoothScatter(crimtab.long.df, xlab = "height", ylab = "finger")
