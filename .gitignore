@@ -6,4 +6,5 @@
 ./R/rsconnect/
 ./R/*.html
 ./R/*.rda
+./R/&.RData
 ./data/*~
