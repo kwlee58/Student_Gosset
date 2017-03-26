@@ -2,5 +2,6 @@ mean_sd <-
 function(x) {
   mean <- mean(x, na.rm = TRUE)
   sd <- sd(x)
-  list(mean = mean, sd = sd)
+  return(c(mean = mean, sd = sd))
+# list(mean = mean, sd = sd)
 }
